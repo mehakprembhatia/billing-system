@@ -1,0 +1,1042 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Harborview Clinic Billing &amp; Receipt Manager</title>
+    <meta
+      name="description"
+      content="Clinic billing application for recording patient services, managing service catalogues, creating invoices with taxes and discounts, tracking payments, reconciling daily totals, and generating printable receipts."
+    />
+    <meta property="og:title" content="Harborview Clinic Billing &amp; Receipt Manager" />
+    <meta
+      property="og:description"
+      content="Clinic billing application for recording patient services, managing service catalogues, creating invoices with taxes and discounts, tracking payments, reconciling daily totals, and generating printable receipts."
+    />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div id="app-shell" class="app-shell">
+      <!-- Left Sidebar Navigation -->
+      <aside id="sidebar" class="sidebar" aria-label="Primary Navigation">
+        <div class="sidebar-brand">
+          <div class="brand-mark" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 5v14M5 12h14" />
+            </svg>
+          </div>
+          <div class="brand-text">
+            <span id="sidebar-clinic-name" class="brand-title">Harborview Clinic</span>
+            <span class="brand-subtitle">Billing &amp; Ledger</span>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav">
+          <button type="button" class="nav-item active" data-nav="billing" aria-current="page">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+              <line x1="12" y1="18" x2="12" y2="12" />
+              <line x1="9" y1="15" x2="15" y2="15" />
+            </svg>
+            <span>New Invoice</span>
+          </button>
+
+          <button type="button" class="nav-item" data-nav="invoices">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z" />
+              <path d="M8 7h8" />
+              <path d="M8 11h8" />
+              <path d="M8 15h5" />
+            </svg>
+            <span>Invoices &amp; Receipts</span>
+          </button>
+
+          <button type="button" class="nav-item" data-nav="reconciliation">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+              <line x1="16" y1="2" x2="16" y2="6" />
+              <line x1="8" y1="2" x2="8" y2="6" />
+              <line x1="3" y1="10" x2="21" y2="10" />
+              <path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01" />
+            </svg>
+            <span>Daily Totals</span>
+          </button>
+
+          <button type="button" class="nav-item" data-nav="patients">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
+            <span>Patients</span>
+          </button>
+
+          <button type="button" class="nav-item" data-nav="services">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" />
+              <rect x="9" y="3" width="6" height="4" rx="1" />
+              <path d="M9 12h6" />
+              <path d="M9 16h6" />
+            </svg>
+            <span>Service Catalogue</span>
+          </button>
+
+          <button type="button" class="nav-item" data-nav="admin">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+            </svg>
+            <span>Admin &amp; Settings</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="sidebar-daily-snapshot">
+            <span class="snapshot-label">Today Collected</span>
+            <span id="sidebar-today-total" class="snapshot-value mono">$0.00</span>
+          </div>
+          <button type="button" id="sidebar-admin-btn" class="btn btn-ghost btn-sm btn-full">
+            <span id="sidebar-admin-label">Unlock Admin Access</span>
+          </button>
+        </div>
+      </aside>
+
+      <div id="sidebar-backdrop" class="sidebar-backdrop" hidden></div>
+
+      <!-- Main Workspace -->
+      <div class="workspace">
+        <header class="topbar">
+          <div class="topbar-left">
+            <button
+              type="button"
+              id="mobile-menu-btn"
+              class="icon-btn mobile-only"
+              aria-label="Open navigation menu"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="18" x2="21" y2="18" />
+              </svg>
+            </button>
+            <div class="topbar-breadcrumb">
+              <span class="breadcrumb-root">Clinic Ledger</span>
+              <span class="breadcrumb-sep" aria-hidden="true">/</span>
+              <h1 id="topbar-title" class="topbar-title">New Invoice</h1>
+            </div>
+          </div>
+
+          <div class="topbar-actions">
+            <button type="button" id="topbar-admin-toggle" class="btn btn-secondary btn-sm">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg>
+              <span id="topbar-admin-text">Staff Mode</span>
+            </button>
+            <button type="button" id="topbar-new-invoice-btn" class="btn btn-primary btn-sm">
+              New Invoice
+            </button>
+          </div>
+        </header>
+
+        <main class="main-content">
+          <!-- VIEW 1: NEW / EDIT INVOICE -->
+          <section id="view-billing" class="view-section active" aria-labelledby="topbar-title">
+            <div class="billing-layout">
+              <!-- Left Column: Patient & Services -->
+              <div class="billing-main">
+                <div id="edit-mode-banner" class="notice-banner" hidden>
+                  <div>
+                    <strong id="edit-mode-label">Editing Invoice</strong>
+                    <span class="muted-text">Changes will recalculate totals and update the ledger.</span>
+                  </div>
+                  <button type="button" id="cancel-edit-btn" class="btn btn-secondary btn-sm">Cancel Edit</button>
+                </div>
+
+                <!-- Patient Reference Block -->
+                <div class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h2 class="panel-title">Patient Reference</h2>
+                      <p class="panel-desc">Select an existing patient record or register a new patient.</p>
+                    </div>
+                    <button type="button" id="quick-add-patient-btn" class="btn btn-secondary btn-sm">
+                      Add New Patient
+                    </button>
+                  </div>
+
+                  <div class="patient-picker-row">
+                    <div class="field-group flex-1">
+                      <label for="invoice-patient-search" class="field-label">Search Patient by Name, ID, or Phone</label>
+                      <div class="combobox-wrap">
+                        <input
+                          type="text"
+                          id="invoice-patient-search"
+                          class="input"
+                          placeholder="Type patient name, PAT-1001, or phone..."
+                          autocomplete="off"
+                          aria-expanded="false"
+                          aria-controls="patient-dropdown-list"
+                        />
+                        <div id="patient-dropdown-list" class="combobox-dropdown" role="listbox" hidden></div>
+                      </div>
+                      <span id="patient-selection-error" class="field-error" hidden></span>
+                    </div>
+                  </div>
+
+                  <div id="selected-patient-summary" class="selected-patient-card" hidden>
+                    <div class="patient-summary-info">
+                      <div class="patient-summary-primary">
+                        <strong id="selected-patient-name"></strong>
+                        <span class="sep" aria-hidden="true">&middot;</span>
+                        <span id="selected-patient-id" class="mono"></span>
+                      </div>
+                      <div id="selected-patient-meta" class="patient-summary-meta"></div>
+                    </div>
+                    <button type="button" id="clear-selected-patient-btn" class="btn btn-ghost btn-sm">Change</button>
+                  </div>
+                </div>
+
+                <!-- Service Catalogue Quick Picker -->
+                <div class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h2 class="panel-title">Add Clinic Services</h2>
+                      <p class="panel-desc">Select procedures or consultations from the active service catalogue.</p>
+                    </div>
+                    <div class="panel-controls">
+                      <input
+                        type="search"
+                        id="billing-service-search"
+                        class="input input-sm"
+                        placeholder="Filter services..."
+                        aria-label="Filter clinic services"
+                      />
+                    </div>
+                  </div>
+
+                  <div id="billing-category-tabs" class="segmented-tabs" role="tablist" aria-label="Service categories"></div>
+
+                  <div id="billing-service-grid" class="service-picker-grid"></div>
+                </div>
+
+                <!-- Selected Line Items -->
+                <div class="panel">
+                  <div class="panel-header">
+                    <div>
+                      <h2 class="panel-title">Invoice Line Items</h2>
+                      <p class="panel-desc">Adjust quantities or remove services before finalizing.</p>
+                    </div>
+                    <button type="button" id="add-custom-item-btn" class="btn btn-secondary btn-sm">
+                      Add Custom Charge
+                    </button>
+                  </div>
+
+                  <div id="custom-item-form" class="inline-subform" hidden>
+                    <div class="inline-subform-grid">
+                      <div class="field-group">
+                        <label for="custom-item-name" class="field-label">Service / Charge Description</label>
+                        <input type="text" id="custom-item-name" class="input input-sm" placeholder="e.g., Medical Certificate Fee" maxlength="80" />
+                      </div>
+                      <div class="field-group">
+                        <label for="custom-item-price" class="field-label">Unit Price</label>
+                        <input type="number" id="custom-item-price" class="input input-sm mono" min="0.01" step="0.01" placeholder="25.00" />
+                      </div>
+                      <div class="field-group">
+                        <label for="custom-item-qty" class="field-label">Qty</label>
+                        <input type="number" id="custom-item-qty" class="input input-sm mono" min="1" max="999" step="1" value="1" />
+                      </div>
+                      <div class="inline-subform-actions">
+                        <button type="button" id="save-custom-item-btn" class="btn btn-primary btn-sm">Add</button>
+                        <button type="button" id="cancel-custom-item-btn" class="btn btn-ghost btn-sm">Cancel</button>
+                      </div>
+                    </div>
+                    <span id="custom-item-error" class="field-error" hidden></span>
+                  </div>
+
+                  <div class="table-wrap">
+                    <table class="data-table" id="invoice-items-table">
+                      <thead>
+                        <tr>
+                          <th>Service</th>
+                          <th class="num">Unit Price</th>
+                          <th class="num">Qty</th>
+                          <th class="num">Line Total</th>
+                          <th class="actions-col">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody id="invoice-items-tbody"></tbody>
+                    </table>
+                  </div>
+                  <div id="invoice-items-empty" class="empty-state">
+                    <p class="empty-title">No services added to this invoice yet</p>
+                    <p class="empty-desc">Click any service above or add a custom charge to begin.</p>
+                  </div>
+                  <span id="invoice-items-error" class="field-error" hidden></span>
+                </div>
+              </div>
+
+              <!-- Right Column: Tax, Discount, Payment & Live Summary -->
+              <aside class="billing-summary" aria-label="Invoice Summary and Payment">
+                <div class="panel sticky-summary">
+                  <div class="panel-header compact">
+                    <div>
+                      <h2 class="panel-title">Billing Summary</h2>
+                      <p id="draft-invoice-number" class="panel-desc mono">Draft &middot; Auto-numbered on save</p>
+                    </div>
+                  </div>
+
+                  <div class="summary-section">
+                    <div class="form-grid-2">
+                      <div class="field-group">
+                        <label for="invoice-date" class="field-label">Billing Date</label>
+                        <input type="date" id="invoice-date" class="input input-sm mono" />
+                      </div>
+                      <div class="field-group">
+                        <label for="invoice-tax-rate" class="field-label">Tax Rate (%)</label>
+                        <input
+                          type="number"
+                          id="invoice-tax-rate"
+                          class="input input-sm mono"
+                          min="0"
+                          max="50"
+                          step="0.25"
+                          value="0"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="form-grid-2">
+                      <div class="field-group">
+                        <label for="invoice-discount-type" class="field-label">Discount Type</label>
+                        <select id="invoice-discount-type" class="input input-sm">
+                          <option value="percent">Percentage (%)</option>
+                          <option value="fixed">Fixed Amount</option>
+                        </select>
+                      </div>
+                      <div class="field-group">
+                        <label for="invoice-discount-value" class="field-label">Discount Value</label>
+                        <input
+                          type="number"
+                          id="invoice-discount-value"
+                          class="input input-sm mono"
+                          min="0"
+                          step="0.01"
+                          value="0"
+                        />
+                      </div>
+                    </div>
+                    <span id="billing-adjustment-error" class="field-error" hidden></span>
+                  </div>
+
+                  <div class="totals-ledger" aria-live="polite">
+                    <div class="ledger-row">
+                      <span>Subtotal</span>
+                      <span id="summary-subtotal" class="mono">$0.00</span>
+                    </div>
+                    <div class="ledger-row">
+                      <span>Discount</span>
+                      <span id="summary-discount" class="mono">-$0.00</span>
+                    </div>
+                    <div class="ledger-row">
+                      <span>Taxable Amount</span>
+                      <span id="summary-taxable" class="mono">$0.00</span>
+                    </div>
+                    <div class="ledger-row">
+                      <span id="summary-tax-label">Tax (0%)</span>
+                      <span id="summary-tax" class="mono">$0.00</span>
+                    </div>
+                    <div class="ledger-row ledger-total">
+                      <span>Grand Total</span>
+                      <span id="summary-grand-total" class="mono">$0.00</span>
+                    </div>
+                  </div>
+
+                  <div class="summary-section">
+                    <div class="form-grid-2">
+                      <div class="field-group">
+                        <label for="invoice-payment-status" class="field-label">Payment Status</label>
+                        <select id="invoice-payment-status" class="input input-sm">
+                          <option value="Paid">Paid in Full</option>
+                          <option value="Partial">Partial Payment</option>
+                          <option value="Unpaid">Unpaid / Pending</option>
+                        </select>
+                      </div>
+                      <div class="field-group" id="payment-method-group">
+                        <label for="invoice-payment-method" class="field-label">Payment Method</label>
+                        <select id="invoice-payment-method" class="input input-sm">
+                          <option value="Card">Card Terminal</option>
+                          <option value="Cash">Cash</option>
+                          <option value="Bank Transfer">Bank Transfer</option>
+                          <option value="Insurance">Insurance / Copay</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="field-group" id="amount-paid-group" hidden>
+                      <label for="invoice-amount-paid" class="field-label">Amount Paid Today</label>
+                      <input
+                        type="number"
+                        id="invoice-amount-paid"
+                        class="input input-sm mono"
+                        min="0"
+                        step="0.01"
+                        placeholder="0.00"
+                      />
+                      <span id="amount-paid-error" class="field-error" hidden></span>
+                    </div>
+
+                    <div class="ledger-balance-row">
+                      <span>Balance Due</span>
+                      <strong id="summary-balance-due" class="mono">$0.00</strong>
+                    </div>
+
+                    <div class="field-group">
+                      <label for="invoice-notes" class="field-label">Visit / Receipt Note (Optional)</label>
+                      <textarea
+                        id="invoice-notes"
+                        class="input textarea-sm"
+                        rows="2"
+                        maxlength="240"
+                        placeholder="e.g., Follow-up in 2 weeks, insurance claim submitted..."
+                      ></textarea>
+                    </div>
+                  </div>
+
+                  <div class="summary-actions">
+                    <button type="button" id="save-and-receipt-btn" class="btn btn-primary btn-full">
+                      Save Invoice &amp; Generate Receipt
+                    </button>
+                    <button type="button" id="reset-invoice-btn" class="btn btn-ghost btn-sm btn-full">
+                      Clear Current Draft
+                    </button>
+                  </div>
+                </div>
+              </aside>
+            </div>
+          </section>
+
+          <!-- VIEW 2: INVOICES & RECEIPTS LEDGER -->
+          <section id="view-invoices" class="view-section" hidden>
+            <div class="panel">
+              <div class="panel-header">
+                <div>
+                  <h2 class="panel-title">Billing Ledger &amp; Receipts</h2>
+                  <p class="panel-desc">Search invoices, update payment statuses, and generate patient receipts.</p>
+                </div>
+                <div class="panel-controls">
+                  <button type="button" id="export-ledger-csv-btn" class="btn btn-secondary btn-sm">
+                    Export CSV
+                  </button>
+                </div>
+              </div>
+
+              <div class="filter-toolbar">
+                <div class="search-field">
+                  <input
+                    type="search"
+                    id="ledger-search-input"
+                    class="input input-sm"
+                    placeholder="Search invoice #, receipt #, patient name, ID, or service..."
+                    aria-label="Search invoices and receipts"
+                  />
+                </div>
+                <div class="filter-controls">
+                  <div class="segmented-tabs" id="ledger-status-tabs" role="tablist" aria-label="Filter by payment status">
+                    <button type="button" class="seg-tab active" data-status="All">All</button>
+                    <button type="button" class="seg-tab" data-status="Paid">Paid</button>
+                    <button type="button" class="seg-tab" data-status="Partial">Partial</button>
+                    <button type="button" class="seg-tab" data-status="Unpaid">Unpaid</button>
+                    <button type="button" class="seg-tab" data-status="Void">Void</button>
+                  </div>
+                  <select id="ledger-date-filter" class="input input-sm" aria-label="Filter by date range">
+                    <option value="all">All Dates</option>
+                    <option value="today">Today</option>
+                    <option value="7days">Last 7 Days</option>
+                    <option value="30days">Last 30 Days</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="table-wrap">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Invoice / Receipt</th>
+                      <th>Date</th>
+                      <th>Patient</th>
+                      <th>Services</th>
+                      <th class="num">Total</th>
+                      <th class="num">Balance Due</th>
+                      <th>Status</th>
+                      <th class="actions-col">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="ledger-tbody"></tbody>
+                </table>
+              </div>
+
+              <div id="ledger-empty" class="empty-state" hidden>
+                <p class="empty-title">No matching invoices found</p>
+                <p class="empty-desc">Try clearing your search or status filter, or create a new clinic invoice.</p>
+                <button type="button" id="ledger-clear-filters-btn" class="btn btn-secondary btn-sm">Clear Filters</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- VIEW 3: DAILY TOTALS & RECONCILIATION -->
+          <section id="view-reconciliation" class="view-section" hidden>
+            <div class="reconciliation-header-bar">
+              <div class="recon-date-controls">
+                <div class="field-group inline">
+                  <label for="recon-date-input" class="field-label">Reconciliation Date</label>
+                  <input type="date" id="recon-date-input" class="input input-sm mono" />
+                </div>
+                <div class="segmented-tabs">
+                  <button type="button" id="recon-today-btn" class="seg-tab">Today</button>
+                  <button type="button" id="recon-yesterday-btn" class="seg-tab">Yesterday</button>
+                </div>
+              </div>
+              <div class="recon-actions">
+                <button type="button" id="recon-export-csv-btn" class="btn btn-secondary btn-sm">Export Daily CSV</button>
+                <button type="button" id="recon-print-btn" class="btn btn-primary btn-sm">Print Daily Summary</button>
+              </div>
+            </div>
+
+            <div class="kpi-strip" aria-live="polite">
+              <div class="kpi-card">
+                <span class="kpi-label">Collected Revenue</span>
+                <strong id="recon-collected" class="kpi-value mono">$0.00</strong>
+                <span id="recon-collected-sub" class="kpi-meta">Received across all methods</span>
+              </div>
+              <div class="kpi-card">
+                <span class="kpi-label">Gross Billed (Net)</span>
+                <strong id="recon-billed" class="kpi-value mono">$0.00</strong>
+                <span id="recon-billed-sub" class="kpi-meta">Excludes voided invoices</span>
+              </div>
+              <div class="kpi-card">
+                <span class="kpi-label">Outstanding Balance</span>
+                <strong id="recon-outstanding" class="kpi-value mono">$0.00</strong>
+                <span id="recon-outstanding-sub" class="kpi-meta">Unpaid &amp; partial balances</span>
+              </div>
+              <div class="kpi-card">
+                <span class="kpi-label">Invoices Issued</span>
+                <strong id="recon-count" class="kpi-value mono">0</strong>
+                <span id="recon-count-sub" class="kpi-meta">0 paid &middot; 0 pending &middot; 0 void</span>
+              </div>
+            </div>
+
+            <div class="recon-grid">
+              <div class="panel">
+                <div class="panel-header compact">
+                  <div>
+                    <h2 class="panel-title">Payment Method Breakdown</h2>
+                    <p class="panel-desc">Compare against physical cash drawer and card terminal batch totals.</p>
+                  </div>
+                </div>
+                <div class="table-wrap">
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>Channel / Category</th>
+                        <th class="num">Transactions</th>
+                        <th class="num">Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody id="recon-methods-tbody"></tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="panel">
+                <div class="panel-header compact">
+                  <div>
+                    <h2 class="panel-title">Taxes, Discounts &amp; Adjustments</h2>
+                    <p class="panel-desc">Daily tax liability and fee concessions for accounting close.</p>
+                  </div>
+                </div>
+                <div class="table-wrap">
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>Accounting Line</th>
+                        <th class="num">Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody id="recon-adjustments-tbody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-header compact">
+                <div>
+                  <h2 class="panel-title">Daily Transaction Register</h2>
+                  <p id="recon-register-subtitle" class="panel-desc">All billing activity recorded for the selected date.</p>
+                </div>
+              </div>
+              <div class="table-wrap">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Invoice / Receipt</th>
+                      <th>Patient</th>
+                      <th>Method</th>
+                      <th>Status</th>
+                      <th class="num">Billed</th>
+                      <th class="num">Collected</th>
+                      <th class="num">Balance</th>
+                      <th class="actions-col">Receipt</th>
+                    </tr>
+                  </thead>
+                  <tbody id="recon-transactions-tbody"></tbody>
+                </table>
+              </div>
+              <div id="recon-empty" class="empty-state" hidden>
+                <p class="empty-title">No billing records on this date</p>
+                <p class="empty-desc">Select another date or create a new invoice for today.</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- VIEW 4: PATIENTS DIRECTORY -->
+          <section id="view-patients" class="view-section" hidden>
+            <div class="panel">
+              <div class="panel-header">
+                <div>
+                  <h2 class="panel-title">Patient Reference Registry</h2>
+                  <p class="panel-desc">Manage patient identifiers, contact details, and individual billing histories.</p>
+                </div>
+                <div class="panel-controls">
+                  <input
+                    type="search"
+                    id="patients-search-input"
+                    class="input input-sm"
+                    placeholder="Search name, PAT ID, or phone..."
+                    aria-label="Search patients"
+                  />
+                  <button type="button" id="add-patient-btn" class="btn btn-primary btn-sm">Add Patient</button>
+                </div>
+              </div>
+
+              <div class="table-wrap">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Patient ID</th>
+                      <th>Full Name</th>
+                      <th>Phone</th>
+                      <th>DOB</th>
+                      <th class="num">Invoices</th>
+                      <th class="num">Total Billed</th>
+                      <th class="num">Balance Due</th>
+                      <th class="actions-col">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="patients-tbody"></tbody>
+                </table>
+              </div>
+
+              <div id="patients-empty" class="empty-state" hidden>
+                <p class="empty-title">No patients match your search</p>
+                <p class="empty-desc">Register a new patient or clear the search filter.</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- VIEW 5: SERVICE CATALOGUE -->
+          <section id="view-services" class="view-section" hidden>
+            <div id="services-admin-notice" class="notice-banner">
+              <div>
+                <strong>Fee Schedule Protection</strong>
+                <span class="muted-text">Adding, editing, or removing clinic services requires Admin Access.</span>
+              </div>
+              <button type="button" id="services-unlock-btn" class="btn btn-secondary btn-sm">Unlock Admin</button>
+            </div>
+
+            <div class="panel">
+              <div class="panel-header">
+                <div>
+                  <h2 class="panel-title">Clinic Service Catalogue</h2>
+                  <p class="panel-desc">Standardized procedure codes and unit fees used across patient invoices.</p>
+                </div>
+                <div class="panel-controls">
+                  <input
+                    type="search"
+                    id="services-search-input"
+                    class="input input-sm"
+                    placeholder="Search code or service..."
+                    aria-label="Search service catalogue"
+                  />
+                  <button type="button" id="add-service-btn" class="btn btn-primary btn-sm">Add Service</button>
+                </div>
+              </div>
+
+              <div id="services-category-tabs" class="segmented-tabs" role="tablist" aria-label="Filter service catalogue"></div>
+
+              <div class="table-wrap">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Code</th>
+                      <th>Service Name</th>
+                      <th>Category</th>
+                      <th class="num">Standard Fee</th>
+                      <th>Status</th>
+                      <th class="actions-col">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="services-tbody"></tbody>
+                </table>
+              </div>
+
+              <div id="services-empty" class="empty-state" hidden>
+                <p class="empty-title">No services match your filter</p>
+                <p class="empty-desc">Adjust your search terms or category selection.</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- VIEW 6: ADMIN & PRACTICE SETTINGS -->
+          <section id="view-admin" class="view-section" hidden>
+            <div class="panel" id="admin-locked-panel">
+              <div class="admin-gate">
+                <h2 class="panel-title">Administrator Access Required</h2>
+                <p class="panel-desc">
+                  Practice profile, receipt headers, default tax rates, fee schedule edits, invoice voiding, and data management are protected by an administrator PIN.
+                </p>
+                <button type="button" id="admin-view-unlock-btn" class="btn btn-primary">Enter Admin PIN</button>
+              </div>
+            </div>
+
+            <div id="admin-unlocked-content" hidden>
+              <div class="admin-status-bar">
+                <div>
+                  <strong>Administrator Session Active</strong>
+                  <span class="muted-text">You have permission to modify clinic settings, service pricing, and void invoices.</span>
+                </div>
+                <button type="button" id="admin-lock-now-btn" class="btn btn-secondary btn-sm">Lock Admin Access</button>
+              </div>
+
+              <form id="clinic-settings-form" class="panel" novalidate>
+                <div class="panel-header">
+                  <div>
+                    <h2 class="panel-title">Clinic Profile &amp; Receipt Header</h2>
+                    <p class="panel-desc">Displayed on all printed and exported patient receipts.</p>
+                  </div>
+                </div>
+
+                <div class="form-grid-2">
+                  <div class="field-group">
+                    <label for="setting-clinic-name" class="field-label">Clinic Name *</label>
+                    <input type="text" id="setting-clinic-name" class="input" required maxlength="80" />
+                  </div>
+                  <div class="field-group">
+                    <label for="setting-clinic-phone" class="field-label">Clinic Phone *</label>
+                    <input type="text" id="setting-clinic-phone" class="input" required maxlength="30" />
+                  </div>
+                  <div class="field-group">
+                    <label for="setting-clinic-address" class="field-label">Clinic Address *</label>
+                    <input type="text" id="setting-clinic-address" class="input" required maxlength="140" />
+                  </div>
+                  <div class="field-group">
+                    <label for="setting-clinic-taxid" class="field-label">Practice Tax / Registration ID</label>
+                    <input type="text" id="setting-clinic-taxid" class="input mono" maxlength="40" />
+                  </div>
+                  <div class="field-group">
+                    <label for="setting-currency" class="field-label">Currency Symbol</label>
+                    <select id="setting-currency" class="input">
+                      <option value="$">USD ($)</option>
+                      <option value="€">EUR (€)</option>
+                      <option value="£">GBP (£)</option>
+                      <option value="₹">INR (₹)</option>
+                      <option value="CAD $">CAD ($)</option>
+                      <option value="AUD $">AUD ($)</option>
+                    </select>
+                  </div>
+                  <div class="field-group">
+                    <label for="setting-default-tax" class="field-label">Default Tax Rate (%)</label>
+                    <input type="number" id="setting-default-tax" class="input mono" min="0" max="50" step="0.25" />
+                  </div>
+                </div>
+
+                <div class="field-group">
+                  <label for="setting-receipt-footer" class="field-label">Receipt Footer Message</label>
+                  <input type="text" id="setting-receipt-footer" class="input" maxlength="160" />
+                </div>
+
+                <div class="form-grid-2">
+                  <div class="field-group">
+                    <label for="setting-new-pin" class="field-label">Update Admin PIN (4-8 digits, optional)</label>
+                    <input type="password" id="setting-new-pin" class="input mono" inputmode="numeric" maxlength="8" placeholder="Leave blank to keep current PIN" />
+                  </div>
+                </div>
+                <span id="settings-form-error" class="field-error" hidden></span>
+
+                <div class="form-footer">
+                  <button type="submit" class="btn btn-primary">Save Clinic Settings</button>
+                </div>
+              </form>
+
+              <div class="panel">
+                <div class="panel-header">
+                  <div>
+                    <h2 class="panel-title">Ledger Backup &amp; Data Maintenance</h2>
+                    <p class="panel-desc">Export local clinic records for safekeeping or reset sample practice data.</p>
+                  </div>
+                </div>
+                <div class="maintenance-actions">
+                  <button type="button" id="export-json-backup-btn" class="btn btn-secondary">Download JSON Backup</button>
+                  <button type="button" id="restore-demo-data-btn" class="btn btn-secondary">Restore Sample Clinic Data</button>
+                  <button type="button" id="clear-invoices-btn" class="btn btn-danger">Clear All Invoices</button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <!-- MODAL: RECEIPT VIEWER & PRINT -->
+    <div id="receipt-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="receipt-modal-title" hidden>
+      <div class="modal-dialog modal-lg">
+        <div class="modal-header no-print">
+          <h2 id="receipt-modal-title" class="modal-title">Official Payment Receipt</h2>
+          <button type="button" class="icon-btn" data-close-modal="receipt-modal" aria-label="Close receipt">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+
+        <div id="receipt-print-area" class="receipt-sheet"></div>
+
+        <div class="modal-footer no-print">
+          <button type="button" id="download-receipt-btn" class="btn btn-secondary">Download Receipt (.txt)</button>
+          <button type="button" id="print-receipt-btn" class="btn btn-primary">Print Receipt</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: PATIENT FORM -->
+    <div id="patient-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="patient-modal-title" hidden>
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h2 id="patient-modal-title" class="modal-title">Register New Patient</h2>
+          <button type="button" class="icon-btn" data-close-modal="patient-modal" aria-label="Close patient form">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+        <form id="patient-form" class="modal-body" novalidate>
+          <input type="hidden" id="patient-form-id" />
+          <div class="field-group">
+            <label for="patient-name-input" class="field-label">Full Name *</label>
+            <input type="text" id="patient-name-input" class="input" required maxlength="80" placeholder="e.g., Maya Lin" />
+          </div>
+          <div class="form-grid-2">
+            <div class="field-group">
+              <label for="patient-phone-input" class="field-label">Phone Number *</label>
+              <input type="tel" id="patient-phone-input" class="input" required maxlength="25" placeholder="e.g., (555) 234-8910" />
+            </div>
+            <div class="field-group">
+              <label for="patient-dob-input" class="field-label">Date of Birth</label>
+              <input type="date" id="patient-dob-input" class="input mono" />
+            </div>
+          </div>
+          <div class="field-group">
+            <label for="patient-ref-input" class="field-label">Insurance / Reference Note (Optional)</label>
+            <input type="text" id="patient-ref-input" class="input" maxlength="100" placeholder="e.g., BlueCross #BC-88412" />
+          </div>
+          <span id="patient-form-error" class="field-error" hidden></span>
+          <div class="modal-footer flush">
+            <button type="button" class="btn btn-ghost" data-close-modal="patient-modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Patient</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- MODAL: PATIENT HISTORY -->
+    <div id="patient-history-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="patient-history-title" hidden>
+      <div class="modal-dialog modal-lg">
+        <div class="modal-header">
+          <h2 id="patient-history-title" class="modal-title">Patient Billing History</h2>
+          <button type="button" class="icon-btn" data-close-modal="patient-history-modal" aria-label="Close patient history">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+        <div id="patient-history-body" class="modal-body"></div>
+      </div>
+    </div>
+
+    <!-- MODAL: SERVICE FORM (ADMIN) -->
+    <div id="service-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="service-modal-title" hidden>
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h2 id="service-modal-title" class="modal-title">Add Clinic Service</h2>
+          <button type="button" class="icon-btn" data-close-modal="service-modal" aria-label="Close service form">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+        <form id="service-form" class="modal-body" novalidate>
+          <input type="hidden" id="service-form-id" />
+          <div class="form-grid-2">
+            <div class="field-group">
+              <label for="service-code-input" class="field-label">Service Code *</label>
+              <input type="text" id="service-code-input" class="input mono" required maxlength="16" placeholder="e.g., SRV-11" />
+            </div>
+            <div class="field-group">
+              <label for="service-category-input" class="field-label">Category *</label>
+              <select id="service-category-input" class="input">
+                <option value="Consultation">Consultation</option>
+                <option value="Diagnostics">Diagnostics</option>
+                <option value="Procedures">Procedures</option>
+                <option value="Immunization">Immunization</option>
+                <option value="Therapy">Therapy</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-group">
+            <label for="service-name-input" class="field-label">Service Name *</label>
+            <input type="text" id="service-name-input" class="input" required maxlength="80" placeholder="e.g., Dermatology Screening" />
+          </div>
+          <div class="form-grid-2">
+            <div class="field-group">
+              <label for="service-price-input" class="field-label">Unit Fee *</label>
+              <input type="number" id="service-price-input" class="input mono" required min="0" step="0.01" placeholder="85.00" />
+            </div>
+            <div class="field-group">
+              <label for="service-active-input" class="field-label">Availability</label>
+              <select id="service-active-input" class="input">
+                <option value="true">Active</option>
+                <option value="false">Archived</option>
+              </select>
+            </div>
+          </div>
+          <span id="service-form-error" class="field-error" hidden></span>
+          <div class="modal-footer flush">
+            <button type="button" class="btn btn-ghost" data-close-modal="service-modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Service</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- MODAL: RECORD PAYMENT -->
+    <div id="payment-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="payment-modal-title" hidden>
+      <div class="modal-dialog modal-sm">
+        <div class="modal-header">
+          <h2 id="payment-modal-title" class="modal-title">Record Payment</h2>
+          <button type="button" class="icon-btn" data-close-modal="payment-modal" aria-label="Close payment form">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+        <form id="payment-form" class="modal-body" novalidate>
+          <input type="hidden" id="payment-invoice-id" />
+          <div id="payment-invoice-summary" class="payment-info-box"></div>
+          <div class="field-group">
+            <label for="payment-amount-input" class="field-label">Payment Amount *</label>
+            <input type="number" id="payment-amount-input" class="input mono" required min="0.01" step="0.01" />
+          </div>
+          <div class="field-group">
+            <label for="payment-method-select" class="field-label">Payment Method</label>
+            <select id="payment-method-select" class="input">
+              <option value="Card">Card Terminal</option>
+              <option value="Cash">Cash</option>
+              <option value="Bank Transfer">Bank Transfer</option>
+              <option value="Insurance">Insurance / Copay</option>
+            </select>
+          </div>
+          <span id="payment-form-error" class="field-error" hidden></span>
+          <div class="modal-footer flush">
+            <button type="button" class="btn btn-ghost" data-close-modal="payment-modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">Apply Payment</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- MODAL: ADMIN PIN UNLOCK -->
+    <div id="admin-pin-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="admin-pin-title" hidden>
+      <div class="modal-dialog modal-sm">
+        <div class="modal-header">
+          <h2 id="admin-pin-title" class="modal-title">Admin Access Verification</h2>
+          <button type="button" class="icon-btn" data-close-modal="admin-pin-modal" aria-label="Close verification">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+        <form id="admin-pin-form" class="modal-body" novalidate>
+          <p class="panel-desc">Enter the clinic administrator PIN to unlock fee edits, settings, and invoice voiding.</p>
+          <p class="pin-hint">Default clinic demo PIN: <strong class="mono">2468</strong></p>
+          <div class="field-group">
+            <label for="admin-pin-input" class="field-label">Administrator PIN</label>
+            <input type="password" id="admin-pin-input" class="input mono" inputmode="numeric" maxlength="8" autocomplete="off" placeholder="Enter PIN" />
+          </div>
+          <span id="admin-pin-error" class="field-error" hidden></span>
+          <div class="modal-footer flush">
+            <button type="button" class="btn btn-ghost" data-close-modal="admin-pin-modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">Unlock Admin</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- MODAL: CONFIRMATION DIALOG -->
+    <div id="confirm-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="confirm-modal-title" hidden>
+      <div class="modal-dialog modal-sm">
+        <div class="modal-header">
+          <h2 id="confirm-modal-title" class="modal-title">Confirm Action</h2>
+          <button type="button" class="icon-btn" data-close-modal="confirm-modal" aria-label="Close confirmation">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p id="confirm-modal-message" class="panel-desc"></p>
+          <div class="modal-footer flush">
+            <button type="button" class="btn btn-ghost" data-close-modal="confirm-modal">Cancel</button>
+            <button type="button" id="confirm-modal-accept" class="btn btn-danger">Confirm</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Print Area for Daily Reconciliation Summary -->
+    <div id="recon-print-sheet" class="recon-print-only" aria-hidden="true"></div>
+
+    <!-- Non-blocking Toast Region -->
+    <div id="toast-region" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+
+    <script type="module" src="./script.js"></script>
+  </body>
+</html>
